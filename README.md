@@ -1,36 +1,164 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Arcanus 🔮
 
-## Getting Started
+Arcanus is a secure, minimal, real-time chat application built with **Next.js (App Router)**, **Supabase**, and **shadcn/ui**.  
+It allows users to create ephemeral chat rooms, join using a room token, and communicate in real time with a clean dark-themed UI.
 
-First, run the development server:
+---
 
+## ✨ Features
+
+- 🔐 **Authentication**
+  - Google OAuth via Supabase
+  - Protected routes using Next.js middleware
+
+- 💬 **Real-time Chat**
+  - Live messaging using Supabase Realtime
+  - Messages appear instantly without refresh
+
+- 🧩 **Ephemeral Chat Rooms**
+  - Create a room instantly
+  - Join using a unique room token
+  - Room auto-invalidates when deleted
+
+- 🗑️ **Room Deletion Handling**
+  - When one user deletes the room:
+    - Other users are notified in real time
+    - They are redirected safely to home
+
+- 🎨 **Modern Dark UI**
+  - Built with shadcn/ui
+  - Responsive layout with sidebar + chat panel
+  - Message bubbles aligned left/right by sender
+
+- 📋 **UX Enhancements**
+  - Copy room ID to clipboard
+  - Toast notifications (Sonner)
+  - Smooth auto-scroll to latest message
+
+---
+
+## 🧱 Tech Stack
+
+**Frontend**
+- Next.js 13+ (App Router)
+- React
+- Tailwind CSS
+- shadcn/ui
+- lucide-react icons
+
+**Backend**
+- Supabase
+  - Auth (Google OAuth)
+  - PostgreSQL
+  - Realtime
+  - Row Level Security (RLS)
+  - RPC functions
+
+---
+
+## 🗄️ Database Structure
+
+### Chatroom
+- `token` (UUID, primary identifier)
+- `activeUser`
+- `locked`
+- Auto-deletes cascade messages
+
+### Messages
+- `id`
+- `RoomId` → references `Chatroom.token`
+- `SenderId`
+- `Content`
+- `timestamp`
+
+---
+
+## 🔐 Security
+
+- Row Level Security (RLS) enabled
+- Users can only:
+  - Insert their own messages
+  - Delete chatrooms they are part of
+- Messages are automatically deleted when a room is removed
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/arcanus.git
+cd arcanus
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Setup environment variables
+Create a `.env.local` file:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Run the app
+```bash
+npm run dev
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧪 Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📁 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+app/
+ ├─ login/
+ ├─ chatroom/[room]/
+ ├─ page.tsx
+ ├─ middleware.ts
+components/
+ └─ ui/ (shadcn)
+lib/
+ └─ supabase.ts
+public/
+ └─ apple-touch-icon.png
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🧠 Future Improvements
+
+- Typing indicators
+- Message encryption
+- Room expiry timer
+- Multiple participants
+- File sharing
+
+---
+
+## 📜 License
+
+MIT License
+
+---
+
+## 👤 Author
+
+**Anmol Sinha**  
+Built with ❤️ and curiosity.
+
+---
+
+If you like this project, consider giving it a ⭐ on GitHub!
